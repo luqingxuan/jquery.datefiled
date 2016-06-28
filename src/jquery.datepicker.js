@@ -14,6 +14,12 @@
 		root.returnExports = factory(root.jQuery);
 	}
 }(this, function($) {
+	
+	function DatePicker(){
+		
+		
+		
+	}
 
 	$.fn.datepicker = function(options) {
 

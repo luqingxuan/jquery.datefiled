@@ -2,7 +2,7 @@
   "name": "jquery.datepicker",
   "version": "1.0.1",
   "description": "jquery datepicker",
-  "main": "jquery.datepicker.js",
+  "main": "src/jquery.datepicker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,0 +1,26 @@
+{
+  "name": "jquery.loadmask",
+  "version": "1.0.1",
+  "description": "jquery loadmask",
+  "main": "jquery.loadmask.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/luqingxuan/jquery.loadmask.git"
+  },
+  "keywords": [
+    "jquery",
+    "loadmask"
+  ],
+  "author": "luqingxuan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luqingxuan/jquery.loadmask/issues"
+  },
+  "homepage": "https://github.com/luqingxuan/jquery.loadmask#readme",
+  "devDependencies": {
+    "jquery": "^2.2.4"
+  }
+}

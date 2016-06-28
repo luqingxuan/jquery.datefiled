@@ -1,25 +1,25 @@
 {
-  "name": "jquery.loadmask",
+  "name": "jquery.datepicker",
   "version": "1.0.1",
-  "description": "jquery loadmask",
-  "main": "jquery.loadmask.js",
+  "description": "jquery datepicker",
+  "main": "jquery.datepicker.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/luqingxuan/jquery.loadmask.git"
+    "url": "git+ssh://git@github.com/luqingxuan/jquery.datepicker.git"
   },
   "keywords": [
     "jquery",
-    "loadmask"
+    "datepicker"
   ],
   "author": "luqingxuan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/luqingxuan/jquery.loadmask/issues"
+    "url": "https://github.com/luqingxuan/jquery.datepicker/issues"
   },
-  "homepage": "https://github.com/luqingxuan/jquery.loadmask#readme",
+  "homepage": "https://github.com/luqingxuan/jquery.datepicker#readme",
   "devDependencies": {
     "jquery": "^2.2.4"
   }

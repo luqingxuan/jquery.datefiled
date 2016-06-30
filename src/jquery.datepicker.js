@@ -198,7 +198,7 @@
             self.renderDays();
 
             setTimeout(function() {
-                self.renderYears().renderMonths();
+                self.renderYears(self.stdYear).renderMonths();
             }, 0);
         });
 
@@ -215,7 +215,7 @@
             self.renderDays();
 
             setTimeout(function() {
-                self.renderYears().renderMonths();
+                self.renderYears(self.stdYear).renderMonths();
             }, 0);
         });
 
@@ -223,6 +223,7 @@
         $el.on('click', '.prev-month', function() {
             self.stdMonth--;
 
+            var year = self.stdYear;
             var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
             self.stdYear = date.getFullYear();
             self.stdMonth = date.getMonth();
@@ -230,9 +231,13 @@
             self.$elMonth.text(i18nMonths[self.stdMonth]);
 
             self.renderDays();
-
+            
             setTimeout(function() {
-                self.renderYears().renderMonths();
+                self.renderMonths();
+            }, 0);
+            
+            self.stdYear !== year && setTimeout(function() {
+                self.renderYears(self.stdYear);
             }, 0);
         });
 
@@ -240,6 +245,7 @@
         $el.on('click', '.next-month', function() {
             self.stdMonth++;
 
+            var year = self.stdYear;
             var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
             self.stdYear = date.getFullYear();
             self.stdMonth = date.getMonth();
@@ -247,9 +253,13 @@
             self.$elMonth.text(i18nMonths[self.stdMonth]);
 
             self.renderDays();
-
+            
             setTimeout(function() {
-                self.renderYears().renderMonths();
+                self.renderMonths();
+            }, 0);
+            
+            self.stdYear !== year && setTimeout(function() {
+                self.renderYears(self.stdYear);
             }, 0);
         });
 

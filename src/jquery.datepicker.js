@@ -170,14 +170,14 @@
 
         // 点击年份视图增减操作
         $el.on('click', '.row-action .more-year', function() {
-            self.renderYears(self.renderedYear += 12);
+            self.renderYears(self.cntYear += 12);
         }).on('click', '.row-action .less-year', function() {
-            self.renderYears(self.renderedYear -= 12);
+            self.renderYears(self.cntYear -= 12);
         });
 
         // 点击导航栏视图年
         $el.on('click', '.current-year', function() {
-            self.renderYears(self.stdYear);
+            self.stdYear !== self.cntYear && self.renderYears();
         });
 
         // 点击导航栏视图月
@@ -198,7 +198,7 @@
             self.renderDays();
 
             setTimeout(function() {
-                self.renderYears(self.stdYear).renderMonths();
+                self.renderYears().renderMonths();
             }, 0);
         });
 
@@ -215,7 +215,7 @@
             self.renderDays();
 
             setTimeout(function() {
-                self.renderYears(self.stdYear).renderMonths();
+                self.renderYears().renderMonths();
             }, 0);
         });
 
@@ -231,13 +231,13 @@
             self.$elMonth.text(i18nMonths[self.stdMonth]);
 
             self.renderDays();
-            
+
             setTimeout(function() {
                 self.renderMonths();
             }, 0);
-            
+
             self.stdYear !== year && setTimeout(function() {
-                self.renderYears(self.stdYear);
+                self.renderYears();
             }, 0);
         });
 
@@ -253,13 +253,13 @@
             self.$elMonth.text(i18nMonths[self.stdMonth]);
 
             self.renderDays();
-            
+
             setTimeout(function() {
                 self.renderMonths();
             }, 0);
-            
+
             self.stdYear !== year && setTimeout(function() {
-                self.renderYears(self.stdYear);
+                self.renderYears();
             }, 0);
         });
 
@@ -272,7 +272,7 @@
             self.stdYear = +$td.text();
             self.$elYear.text(self.stdYear);
 
-            self.renderYears(self.stdYear);
+            self.renderYears();
 
             setTimeout(function() {
                 self.renderDays().renderMonths();
@@ -506,7 +506,9 @@
     };
 
     DatePicker.prototype.renderYears = function(year) {
-        this.renderedYear = year;
+        year = year || this.stdYear;
+
+        this.cntYear = year;
 
         var currentYear = new Date().getFullYear();
 

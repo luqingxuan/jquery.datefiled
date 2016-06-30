@@ -66,7 +66,8 @@
             <div class="x-datepicker-foot"></div>\
     ';
     /**
-     * options=>{container:document.body,inline:false,firstDay:0,showWeekNum:true,showWeek:true,rpad:true,value:new Date()}
+     * options=>{container:document.body,inline:false,firstDay:0,showWeekNum:true,showWeek:true,rpad:true,value:new
+     * Date()}
      */
     function DatePicker($el, options) {
 
@@ -75,7 +76,7 @@
 
         this.options = options;
 
-        //销毁了
+        // 销毁了
         this.date = options.date || new Date();
 
         this.$el = $el.addClass('x-datepicker').html(tpl);
@@ -97,8 +98,7 @@
         this.$elYear = $el.find('.current-year');
         this.$elMonth = $el.find('.current-month');
 
-        this.$elYear.text(this.date.getFullYear());
-        this.$elMonth.text(i18nMonths[this.date.getMonth()]);
+        this.refreshNavText();
 
         this.renderDays();
         this.renderMonths();
@@ -188,10 +188,7 @@
             var date = self.date;
             date.setFullYear(date.getFullYear() - 1);
 
-            self.$elYear.text(date.getFullYear());
-            self.$elMonth.text(i18nMonths[date.getMonth()]);
-
-            self.renderDays();
+            self.refreshNavText().renderDays();
 
             setTimeout(function() {
                 self.renderYears().renderMonths();
@@ -203,10 +200,7 @@
             var date = self.date;
             date.setFullYear(date.getFullYear() + 1);
 
-            self.$elYear.text(date.getFullYear());
-            self.$elMonth.text(i18nMonths[date.getMonth()]);
-
-            self.renderDays();
+            self.refreshNavText().renderDays();
 
             setTimeout(function() {
                 self.renderYears().renderMonths();
@@ -220,10 +214,7 @@
 
             date.setMonth(date.getMonth() - 1);
 
-            self.$elYear.text(date.getFullYear());
-            self.$elMonth.text(i18nMonths[date.getMonth()]);
-
-            self.renderDays();
+            self.refreshNavText().renderDays();
 
             setTimeout(function() {
                 self.renderMonths();
@@ -241,10 +232,7 @@
 
             date.setMonth(date.getMonth() + 1);
 
-            self.$elYear.text(date.getFullYear());
-            self.$elMonth.text(i18nMonths[date.getMonth()]);
-
-            self.renderDays();
+            self.refreshNavText().renderDays();
 
             setTimeout(function() {
                 self.renderMonths();
@@ -263,9 +251,8 @@
 
             var date = self.date;
             date.setFullYear(+$td.text());
-            self.$elYear.text(date.getFullYear());
 
-            self.renderYears();
+            self.refreshNavText().renderYears();
 
             setTimeout(function() {
                 self.renderDays().renderMonths();
@@ -280,9 +267,8 @@
 
             var date = self.date;
             date.setMonth(+$td.data('value'));
-            self.$elMonth.text(i18nMonths[date.getMonth()]);
 
-            self.renderMonths();
+            self.refreshNavText().renderMonths();
 
             setTimeout(function() {
                 self.renderDays();
@@ -300,16 +286,18 @@
             if ($td.hasClass('day-next-month')) {
                 date.setMonth(date.getMonth() + 1);
                 date.setDate(+$td.text());
-                self.$elYear.text(date.getFullYear());
-                self.$elMonth.text(i18nMonths[date.getMonth()]);
+
+                self.refreshNavText();
+
                 return self.renderDays();
             }
 
             if ($td.hasClass('day-prev-month')) {
                 date.setMonth(date.getMonth() - 1);
                 date.setDate(+$td.text());
-                self.$elYear.text(date.getFullYear());
-                self.$elMonth.text(i18nMonths[date.getMonth()]);
+
+                self.refreshNavText();
+
                 return self.renderDays();
             }
 
@@ -338,6 +326,17 @@
         var key = '_timer_' + timerKey;
         this[key] && clearTimeout(this[key]);
         this[key] = null;
+        return this;
+    };
+
+    DatePicker.prototype.refreshNavText = function() {
+
+        var year = this.date.getFullYear();
+        var month = i18nMonths[this.date.getMonth()];
+
+        this.$elMonth.text(month);
+        this.$elYear.text(year);
+
         return this;
     };
 

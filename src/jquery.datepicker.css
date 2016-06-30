@@ -1,1 +1,138 @@
 @CHARSET "UTF-8";
+
+.x-datepicker {
+	position: absolute;
+	background: white;
+	border: 1px solid #bbb;
+	min-width: 180px;
+}
+
+.x-datepicker .lt {
+	float: left;
+}
+
+.x-datepicker .rt {
+	float: right;
+}
+
+.x-datepicker .fix:before, .x-datepicker .fix:after {
+	display: table;
+	content: " ";
+	clear: both;
+}
+
+.x-datepicker-inline {
+	position: relative;
+}
+
+.x-datepicker-divider {
+	border-top: 1px solid #ddd;
+}
+
+.x-datepicker-head {
+	padding: 0 5px;
+}
+
+.x-datepicker-head .head-inner {
+	width: 50%;
+}
+
+.x-datepicker-head .icon-item {
+	width: 20px;
+	padding: 5px 0;
+	cursor: pointer;
+	text-align: center;
+}
+
+.x-datepicker-head .current-month {
+	cursor: pointer;
+	padding: 5px 0;
+	display: block;
+	margin-left: 50px;
+	display: block;
+	text-align: center;
+}
+
+.x-datepicker-head .current-year {
+	cursor: pointer;
+	padding: 5px 0;
+	display: block;
+	margin-right: 50px;
+	text-align: center;
+}
+
+.x-datepicker-body {
+	position: relative;
+}
+
+.x-datepicker-body table {
+	width: 100%;
+}
+
+.x-datepicker td {
+	text-align: center;
+	padding: 3px;
+	cursor: pointer;
+}
+
+.x-datepicker td.holder {
+	cursor: default;
+}
+
+.x-datepicker-years, .x-datepicker-months {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: white;
+}
+
+.x-datepicker-years td, .x-datepicker-months td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.x-datepicker .weekday {
+	cursor: default;
+	background-color: #bdebee;
+}
+
+.x-datepicker .weeknum, .x-datepicker .weeknum-title {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.x-datepicker .weeknum {
+	background-color: #daf3f5;
+}
+
+.x-datepicker .day-other-month {
+	color: #6a6aff;
+}
+
+.x-datepicker .hover {
+	background-color: #c0ebef;
+}
+
+.x-datepicker .active {
+	cursor: default;
+	color: #a9e4e9;
+}
+
+.x-datepicker .current {
+	color: blue;
+}
+
+.x-datepicker .disabled {
+	cursor: default;
+	background: blue;
+	color: white;
+}
+
+body {
+	font-family: Tahoma, sans-serif;
+	font-size: 12px;
+	color: #333;
+}

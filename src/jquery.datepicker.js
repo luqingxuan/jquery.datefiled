@@ -66,24 +66,22 @@
             <div class="x-datepicker-foot"></div>\
     ';
     /**
-     * options=>{container:document.body,inline:false,firstDay:0,showWeekNum:true,showWeek:true}
+     * options=>{container:document.body,inline:false,firstDay:0,showWeekNum:true,showWeek:true,rpad:true,value:new Date()}
      */
     function DatePicker($el, options) {
-        var today = new Date();
 
         options = options || {};
         options.firstDay = options.firstDay || 0;
 
         this.options = options;
 
+        //销毁了
+        this.date = options.date || new Date();
+
         this.$el = $el.addClass('x-datepicker').html(tpl);
 
         options.inline && $el.addClass('x-datepicker-inline');
         options.cls && $el.addClass(options.cls);
-
-        this.stdYear = today.getFullYear();
-        this.stdMonth = today.getMonth();
-        this.stdDate = today.getDate();
 
         this.init();
     }
@@ -99,12 +97,12 @@
         this.$elYear = $el.find('.current-year');
         this.$elMonth = $el.find('.current-month');
 
-        this.$elYear.text(this.stdYear);
-        this.$elMonth.text(i18nMonths[this.stdMonth]);
+        this.$elYear.text(this.date.getFullYear());
+        this.$elMonth.text(i18nMonths[this.date.getMonth()]);
 
         this.renderDays();
         this.renderMonths();
-        this.renderYears(this.stdYear);
+        this.renderYears(this.date.getFullYear());
 
         // 鼠标在导航月份上移动
         $el.on('mouseenter', '.current-month', function(e) {
@@ -177,7 +175,7 @@
 
         // 点击导航栏视图年
         $el.on('click', '.current-year', function() {
-            self.stdYear !== self.cntYear && self.renderYears();
+            self.date.getFullYear() !== self.cntYear && self.renderYears();
         });
 
         // 点击导航栏视图月
@@ -187,13 +185,11 @@
 
         // 点击导航栏视图上一年
         $el.on('click', '.prev-year', function() {
-            self.stdYear--;
+            var date = self.date;
+            date.setFullYear(date.getFullYear() - 1);
 
-            var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
-            self.stdYear = date.getFullYear();
-            self.stdMonth = date.getMonth();
-            self.$elYear.text(self.stdYear);
-            self.$elMonth.text(i18nMonths[self.stdMonth]);
+            self.$elYear.text(date.getFullYear());
+            self.$elMonth.text(i18nMonths[date.getMonth()]);
 
             self.renderDays();
 
@@ -204,13 +200,11 @@
 
         // 点击导航栏视图下一年
         $el.on('click', '.next-year', function() {
-            self.stdYear++;
+            var date = self.date;
+            date.setFullYear(date.getFullYear() + 1);
 
-            var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
-            self.stdYear = date.getFullYear();
-            self.stdMonth = date.getMonth();
-            self.$elYear.text(self.stdYear);
-            self.$elMonth.text(i18nMonths[self.stdMonth]);
+            self.$elYear.text(date.getFullYear());
+            self.$elMonth.text(i18nMonths[date.getMonth()]);
 
             self.renderDays();
 
@@ -221,14 +215,13 @@
 
         // 点击导航栏视图上一月
         $el.on('click', '.prev-month', function() {
-            self.stdMonth--;
+            var date = self.date,
+                year = date.getFullYear();
 
-            var year = self.stdYear;
-            var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
-            self.stdYear = date.getFullYear();
-            self.stdMonth = date.getMonth();
-            self.$elYear.text(self.stdYear);
-            self.$elMonth.text(i18nMonths[self.stdMonth]);
+            date.setMonth(date.getMonth() - 1);
+
+            self.$elYear.text(date.getFullYear());
+            self.$elMonth.text(i18nMonths[date.getMonth()]);
 
             self.renderDays();
 
@@ -236,21 +229,20 @@
                 self.renderMonths();
             }, 0);
 
-            self.stdYear !== year && setTimeout(function() {
+            date.getFullYear() !== year && setTimeout(function() {
                 self.renderYears();
             }, 0);
         });
 
         // 点击导航栏视图下一月
         $el.on('click', '.next-month', function() {
-            self.stdMonth++;
+            var date = self.date,
+                year = date.getFullYear();
 
-            var year = self.stdYear;
-            var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
-            self.stdYear = date.getFullYear();
-            self.stdMonth = date.getMonth();
-            self.$elYear.text(self.stdYear);
-            self.$elMonth.text(i18nMonths[self.stdMonth]);
+            date.setMonth(date.getMonth() + 1);
+
+            self.$elYear.text(date.getFullYear());
+            self.$elMonth.text(i18nMonths[date.getMonth()]);
 
             self.renderDays();
 
@@ -258,7 +250,7 @@
                 self.renderMonths();
             }, 0);
 
-            self.stdYear !== year && setTimeout(function() {
+            date.getFullYear() !== year && setTimeout(function() {
                 self.renderYears();
             }, 0);
         });
@@ -269,8 +261,9 @@
             if ($td.hasClass('active'))
                 return;
 
-            self.stdYear = +$td.text();
-            self.$elYear.text(self.stdYear);
+            var date = self.date;
+            date.setFullYear(+$td.text());
+            self.$elYear.text(date.getFullYear());
 
             self.renderYears();
 
@@ -285,8 +278,9 @@
             if ($td.hasClass('active'))
                 return;
 
-            self.stdMonth = +$td.data('value');
-            self.$elMonth.text(i18nMonths[self.stdMonth]);
+            var date = self.date;
+            date.setMonth(+$td.data('value'));
+            self.$elMonth.text(i18nMonths[date.getMonth()]);
 
             self.renderMonths();
 
@@ -295,38 +289,38 @@
             }, 0);
         });
 
-        // 点击具体月份，选中
+        // 点击具体日期，选中
         $el.on('click', '.day:not(".disabled")', function() {
             var $td = $(this);
-
             if ($td.hasClass('active'))
                 return;
 
-            self.stdDate = +$td.text();
+            var date = self.date;
 
             if ($td.hasClass('day-next-month')) {
-                self.stdMonth++;
-                var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
-                self.stdYear = date.getFullYear();
-                self.stdMonth = date.getMonth();
-                self.$elYear.text(self.stdYear);
-                self.$elMonth.text(i18nMonths[self.stdMonth]);
+                date.setMonth(date.getMonth() + 1);
+                date.setDate(+$td.text());
+                self.$elYear.text(date.getFullYear());
+                self.$elMonth.text(i18nMonths[date.getMonth()]);
                 return self.renderDays();
             }
 
             if ($td.hasClass('day-prev-month')) {
-                self.stdMonth--;
-                var date = new Date(self.stdYear, self.stdMonth, self.stdDate);
-                self.stdYear = date.getFullYear();
-                self.stdMonth = date.getMonth();
-                self.$elYear.text(self.stdYear);
-                self.$elMonth.text(i18nMonths[self.stdMonth]);
+                date.setMonth(date.getMonth() - 1);
+                date.setDate(+$td.text());
+                self.$elYear.text(date.getFullYear());
+                self.$elMonth.text(i18nMonths[date.getMonth()]);
                 return self.renderDays();
             }
 
+            date.setDate(+$td.text());
             $td.closest('tbody').find('.active').removeClass('active');
             $td.addClass('active');
         });
+    };
+
+    DatePicker.prototype.rpad = function(v) {
+        return v < 10 ? '0' + v : v;
     };
 
     DatePicker.prototype.setTimeout = function(timerKey, callback, timeout) {
@@ -397,26 +391,24 @@
     };
 
     DatePicker.prototype.renderDays = function(date) {
-        date = date || new Date(this.stdYear, this.stdMonth, this.stdDate);
+        date = date || this.date;
 
         var html = [];
         var opts = this.options;
 
         // 具体日期单元格
         var concatDay = function(currentDate, renderDate, html) {
-            var rpad = function(v) {
-                return v < 10 ? '0' + v : v;
-            };
+            var date = currentDate.getDate();
 
             // 当前计算的单元格日期201605
-            var current = '' + currentDate.getFullYear() + rpad(currentDate.getMonth() + 1);
+            var current = '' + currentDate.getFullYear() + this.rpad(currentDate.getMonth() + 1);
 
             // 准备渲染的月份日期201606
-            var render = '' + renderDate.getFullYear() + rpad(renderDate.getMonth() + 1);
+            var render = '' + renderDate.getFullYear() + this.rpad(renderDate.getMonth() + 1);
 
             // 今天20160613
             var todayDate = new Date();
-            var today = '' + todayDate.getFullYear() + rpad(todayDate.getMonth() + 1);
+            var today = '' + todayDate.getFullYear() + this.rpad(todayDate.getMonth() + 1);
 
             html.push('<td class="day');
 
@@ -432,7 +424,7 @@
             // 当前选中天
             current === render && currentDate.getDate() === renderDate.getDate() && html.push(' active');
 
-            html.push('">', currentDate.getDate(), '</td>');
+            html.push('">', this.options.rpad !== false ? this.rpad(date) : date, '</td>');
         };
 
         var totalMonthDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(),
@@ -451,11 +443,11 @@
             html.push('<tr>');
 
             // 显示每年中第几周
-            opts.showWeekNum !== false && html.push('<td class="weekday weeknum-title">周</td>');
+            opts.showWeekNum !== false && html.push('<td class="weekday weekday-title">周</td>');
 
             // 星期几序号
             for (var i = 0; i < 7; i++)
-                html.push('<td class="weekday">', i18nWeeks[firstDay++], '</td>');
+                html.push('<td class="weekday">', i18nWeeks[firstDay + i], '</td>');
 
             html.push('</tr>');
         }
@@ -469,7 +461,7 @@
             count % 7 == 0 && count !== 0 && html.push('</tr>');
             count % 7 == 0 && html.push('<tr>');
             // 显示每年第几周
-            opts.showWeekNum !== false && count % 7 == 0 && html.push('<td class="weeknum">', moment(cellDate).week(), '</td>');
+            opts.showWeekNum !== false && count % 7 == 0 && html.push('<td class="weeknum">', this.rpad(moment(cellDate).week()), '</td>');
             concatDay.call(this, cellDate, date, html);
         }
         html.push('</tr>');
@@ -479,6 +471,7 @@
 
     DatePicker.prototype.renderMonths = function() {
         var html = [];
+        var stdMonth = this.date.getMonth();
         var cntMonth = new Date().getMonth();
 
         for (var i = 0; i < 4; i++) {
@@ -486,17 +479,17 @@
 
             html.push('<td class="month');
             cntMonth === i * 3 + 0 && html.push(' current');
-            this.stdMonth === i * 3 + 0 && html.push(' active');
+            stdMonth === i * 3 + 0 && html.push(' active');
             html.push('" data-value="', i * 3 + 0, '">', i18nMonths[i * 3 + 0], '</td>');
 
             html.push('<td class="month');
             cntMonth === i * 3 + 1 && html.push(' current');
-            this.stdMonth === i * 3 + 1 && html.push(' active');
+            stdMonth === i * 3 + 1 && html.push(' active');
             html.push('" data-value="', i * 3 + 1, '">', i18nMonths[i * 3 + 1], '</td>');
 
             html.push('<td class="month');
             cntMonth === i * 3 + 2 && html.push(' current');
-            this.stdMonth === i * 3 + 2 && html.push(' active');
+            stdMonth === i * 3 + 2 && html.push(' active');
             html.push('" data-value="', i * 3 + 2, '">', i18nMonths[i * 3 + 2], '</td>');
 
             html.push('</tr>');
@@ -506,32 +499,25 @@
     };
 
     DatePicker.prototype.renderYears = function(year) {
-        year = year || this.stdYear;
-
-        this.cntYear = year;
-
-        var currentYear = new Date().getFullYear();
-
-        var stdYear = this.stdYear;
-
-        year = year || currentYear;
-
+        var stdYear = this.date.getFullYear();
+        year = year || stdYear;
         year -= 4;
 
-        var html = [],
-            tmp;
+        this.cntYear = year;
+        var nowYear = new Date().getFullYear();
+
+        var tmp, html = [];
         for (var i = 0; i < 4; i++) {
             html.push('<tr>');
             for (var j = 0; j < 3; j++) {
-                var tmp = year + 3 * i + j;
+                tmp = year + 3 * i + j;
                 html.push('<td class="year');
-                tmp === currentYear && html.push(' current');
+                tmp === nowYear && html.push(' current');
                 tmp === stdYear && html.push(' active');
                 html.push('">', tmp, '</td>');
             }
             html.push('</tr>');
         }
-
         this.$elYears.find('> table:eq(0) > tbody').html(html.join(''));
         return this;
     };
@@ -552,12 +538,28 @@
 
     };
 
+    DatePicker.prototype.on = function(evt, cb) {
+        this.$el.on('datepicker.' + evt, cb);
+    };
+
+    DatePicker.prototype.once = function(evt, cb) {
+        this.$el.once('datepicker.' + evt, cb);
+    };
+
+    DatePicker.prototype.off = function(evt, cb) {
+        this.$el.off('datepicker.' + evt, cb);
+    };
+
+    DatePicker.prototype.trigger = function(evt) {
+        this.$el.trigger('datepicker.' + evt, this.date);
+    };
+
     $.fn.datepicker = function(options) {
 
         options = options || {};
 
         $(this).each(function() {
-            new DatePicker($(this));
+            new DatePicker($(this), options);
         });
     };
 

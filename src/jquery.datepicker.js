@@ -538,20 +538,22 @@
 
     };
 
-    DatePicker.prototype.on = function(evt, cb) {
-        this.$el.on('datepicker.' + evt, cb);
+    DatePicker.prototype.on = function(events, selector, data, handler) {
+        this.$el.on('datepicker.' + events, selector, data, handler);
     };
 
-    DatePicker.prototype.once = function(evt, cb) {
-        this.$el.once('datepicker.' + evt, cb);
+    DatePicker.prototype.once = function(events, selector, data, handler) {
+        this.$el.once('datepicker.' + events, selector, data, handler);
     };
 
-    DatePicker.prototype.off = function(evt, cb) {
-        this.$el.off('datepicker.' + evt, cb);
+    DatePicker.prototype.off = function(events, selector, handler) {
+        this.$el.off('datepicker.' + events, selector, handler);
     };
 
-    DatePicker.prototype.trigger = function(evt) {
-        this.$el.trigger('datepicker.' + evt, this.date);
+    DatePicker.prototype.trigger = function(events, extraParameters) {
+        extraParameters = extraParameters || {};
+        extraParameters.date = this.date;
+        this.$el.trigger('datepicker.' + events, extraParameters);
     };
 
     $.fn.datepicker = function(options) {

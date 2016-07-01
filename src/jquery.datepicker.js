@@ -98,11 +98,11 @@
         this.$elYear = $el.find('.current-year');
         this.$elMonth = $el.find('.current-month');
 
-        this.refreshNavText();
+        this.refreshNavText().renderDays();
 
-        this.renderDays();
-        this.renderMonths();
-        this.renderYears(this.date.getFullYear());
+        setTimeout(function() {
+            self.renderMonths().renderYears(self.date.getFullYear());
+        }, 0);
 
         // 鼠标在导航月份上移动
         $el.on('mouseenter', '.current-month', function(e) {

@@ -98,7 +98,7 @@
         props : {
             showOtherMonthDay: {
                 type: Boolean,
-                default: false
+                default: true
             },
             firstDayOfWeek: {
                 type: Number,
@@ -453,6 +453,7 @@
     }
 
     .dp-cell-weekNo {
+        font-weight: bold;
         text-align: center;
     }
 
